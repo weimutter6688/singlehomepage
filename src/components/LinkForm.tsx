@@ -28,7 +28,6 @@ export default function LinkForm({ initialLink, categories, onSubmit, onCancel }
   const [description, setDescription] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [newCategory, setNewCategory] = useState('');
-  const [showNewCategory, setShowNewCategory] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{
     title?: string;
@@ -148,7 +147,6 @@ export default function LinkForm({ initialLink, categories, onSubmit, onCancel }
     if (newCategory.trim() && !selectedCategories.includes(newCategory.trim())) {
       setSelectedCategories(prev => [...prev, newCategory.trim()]);
       setNewCategory('');
-      setShowNewCategory(false);
       
       // Clear category error if any categories are selected
       if (errors.categories) {

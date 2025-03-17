@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getLinks, addLink, updateLink } from '@/lib/data';
 
 // GET /api/links - Get all links
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Authentication is now handled by middleware
     const links = await getLinks();

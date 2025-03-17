@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { getAccessToken, setAccessToken } from '@/lib/client-auth';
+import { setAccessToken } from '@/lib/client-auth';
 
 export default function TokenInput() {
   const [token, setToken] = useState('');
