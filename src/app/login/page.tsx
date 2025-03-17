@@ -26,8 +26,8 @@ export default function LoginPage() {
       });
 
       if (response.ok) {
-        // If successful, refresh the page to be redirected to the home page
-        router.refresh();
+        // If successful, redirect to the admin home page
+        router.push('/');
       } else {
         const data = await response.json();
         setError(data.error || '令牌无效');
@@ -40,11 +40,15 @@ export default function LoginPage() {
     }
   };
 
+  const goToPublicView = () => {
+    router.push('/public');
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 dark:bg-gray-900 p-4">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">欢迎访问</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">管理员登录</h1>
           <p className="text-gray-600 dark:text-gray-300">请输入访问令牌继续</p>
         </div>
         
@@ -78,12 +82,21 @@ export default function LoginPage() {
               isLoading ? 'opacity-70 cursor-not-allowed' : ''
             }`}
           >
-            {isLoading ? '验证中...' : '继续访问'}
+            {isLoading ? '验证中...' : '登录管理'}
           </button>
         </form>
         
-        <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-          <p>访问令牌可在环境变量中配置</p>
+        <div className="mt-6 text-center">
+          <button
+            onClick={goToPublicView}
+            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+          >
+            返回公开浏览页面
+          </button>
+          
+          <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+            访问令牌可在环境变量中配置
+          </p>
         </div>
       </div>
     </div>
