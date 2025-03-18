@@ -81,6 +81,35 @@ bun dev
 
 ## 部署
 
+### Vercel部署
+
 推荐使用 [Vercel平台](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) 部署你的Next.js应用，Vercel是Next.js的创建者。
 
 查看 [Next.js部署文档](https://nextjs.org/docs/app/building-your-application/deploying) 了解更多详情。
+
+### PM2部署
+
+如果你想在自己的服务器上部署，可以使用PM2进行进程管理：
+
+1. 全局安装PM2:
+```bash
+npm install -g pm2
+```
+
+2. 构建生产版本:
+```bash
+npm run build
+```
+
+3. 使用PM2启动应用:
+```bash
+pm2 start    # 首次启动应用
+```
+
+常用的PM2管理命令:
+```bash
+pm2 restart singlehomepage  # 重启应用
+pm2 stop singlehomepage    # 停止应用
+pm2 logs singlehomepage    # 查看应用日志
+pm2 list                   # 查看所有应用状态
+```
