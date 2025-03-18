@@ -4,36 +4,39 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import LinkList from '@/components/LinkList';
 import ThemeToggle from '@/components/ThemeToggle';
+import DataManagement from '@/components/DataManagement';
+
+import { checkAuthentication } from '@/lib/client-auth';
 
 export default function Home() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Check authentication status
+  // Check authentication status immediately and redirect if not authenticated
   useEffect(() => {
-    async function checkAuth() {
-      try {
-        // Attempt to access an authenticated endpoint
-        const response = await fetch('/api/auth/verify', {
-          method: 'GET'
-        });
-        
-        if (response.status === 401) {
-          // Not authenticated, redirect to public page
-          router.replace('/public');
-        } else {
-          setIsAuthenticated(true);
-        }
-      } catch (error) {
-        console.error('Error checking auth status:', error);
-        // On error, default to public page
+    async function redirectIfNotAuth() {
+      const isAuth = await checkAuthentication();
+      if (!isAuth) {
         router.replace('/public');
+      } else {
+        setIsAuthenticated(true);
       }
     }
-    
-    checkAuth();
+    redirectIfNotAuth();
   }, [router]);
+
+  // Check authentication periodically
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const isAuth = await checkAuthentication();
+      if (!isAuth && isAuthenticated) {
+        router.replace('/public');
+      }
+    }, 30000); // Check every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [isAuthenticated, router]);
 
   const handleLogout = async () => {
     if (confirm('确定要登出系统吗？')) {
@@ -74,9 +77,6 @@ export default function Home() {
       <header className="container-custom mb-10 flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">我的导航页 (管理员视图)</h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-1">
-            快速访问常用链接
-          </p>
         </div>
         
         <div className="flex items-center space-x-3">
@@ -101,6 +101,7 @@ export default function Home() {
       
       <main className="container-custom max-w-6xl">
         <LinkList />
+        <DataManagement />
       </main>
       
       <footer className="container-custom mt-16 pt-6 border-t border-gray-200 dark:border-gray-700">

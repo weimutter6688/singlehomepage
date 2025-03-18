@@ -72,10 +72,7 @@ export default function PublicPage() {
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <header className="container-custom mb-10 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">我的导航页</h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-1">
-            快速访问常用链接
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">homepage</h1>
         </div>
         
         <div className="flex items-center space-x-3">

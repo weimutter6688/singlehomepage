@@ -15,6 +15,8 @@ export default function LoginPage() {
     setError('');
 
     try {
+      console.log('登录页面 - 提交的令牌:', token);
+
       // Verify the token by making a request to an API endpoint
       const response = await fetch('/api/auth/verify', {
         method: 'POST',
@@ -22,11 +24,13 @@ export default function LoginPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ token }),
+        // 确保包含credentials以接收和发送cookie
+        credentials: 'include'
       });
 
       if (response.ok) {
-        // If successful, redirect to the admin home page
-        router.push('/');
+        // 登录成功后强制刷新页面以确保cookie生效
+        window.location.href = '/';
       } else {
         const data = await response.json();
         setError(data.error || '令牌无效');

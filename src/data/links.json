@@ -1,35 +1,6 @@
 {
   "links": [
     {
-      "id": "1",
-      "title": "github",
-      "url": "https://github.com/",
-      "description": "代码托管平台",
-      "categories": [
-        "code"
-      ]
-    },
-    {
-      "title": "firefox-sdsu",
-      "url": "http://100.100.100.100:5810",
-      "description": "sdsu edu azure",
-      "categories": [
-        "firefox",
-        "education"
-      ],
-      "id": "2"
-    },
-    {
-      "title": "firefox",
-      "url": "http://100.100.100.100:5810",
-      "description": "firefox on arm phoenix",
-      "categories": [
-        "firefox",
-        "browser"
-      ],
-      "id": "3"
-    },
-    {
       "title": "xinjp",
       "url": "https://xinjp.com",
       "description": "个人博客",
@@ -37,28 +8,27 @@
         "blog",
         "personal"
       ],
-      "id": "4"
+      "id": "1"
     },
     {
+      "id": "2",
       "title": "studyblog",
       "url": "https://studyblog.me",
-      "description": "个人博客",
+      "description": "个人博客 nextjs blog",
       "categories": [
         "blog",
         "study"
-      ],
-      "id": "5"
+      ]
     },
     {
+      "id": "3",
       "title": "studytec",
       "url": "https://studytec.net",
       "description": "个人博客 on notionnext",
       "categories": [
         "blog",
-        "tech",
-        "study"
-      ],
-      "id": "6"
+        "tech"
+      ]
     }
   ]
 }

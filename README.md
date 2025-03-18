@@ -1,73 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Single Homepage 单页面主页应用
 
-## Getting Started
+这是一个基于 [Next.js](https://nextjs.org) 构建的单页面主页应用，使用 [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) 引导创建。
 
-### Environment Setup
+## 开始使用
 
-Before running the application, you need to set up the environment variables:
+### 环境配置
 
-1. Create a `.env` file in the root directory with the following content:
+在运行应用之前，你需要设置环境变量：
+
+1. 在项目根目录创建 `.env` 文件，内容如下：
 ```
 ACCESS_TOKEN=your-secret-token-here
 ```
 
-This token will be used for both page access authentication and API authentication.
+你可以使用以下命令生成一个安全的随机令牌：
 
-### Authentication System
+```bash
+# Linux/macOS
+openssl rand -base64 32
 
-This application uses token-based authentication at two levels:
+# 或者使用这个命令生成更易读的令牌
+head -c 32 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9' | head -c 32
 
-1. **Page-level Authentication**: Users must enter a valid access token to access any page of the application. This is enforced by middleware that checks for a valid token cookie.
+# Windows PowerShell
+$random = [System.Convert]::ToBase64String([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(24))
+echo $random
+```
 
-2. **API Authentication**: The same token is used to authenticate API requests for modifying data (adding, updating, deleting links).
+### 身份验证系统
 
-**Features:**
-- Login page for entering the access token
-- Access token verification against the value in `.env`
-- Secure cookie storage of the token (httpOnly, secure in production)
-- Logout functionality
-- Token validation on all pages and protected API routes
+本应用使用基于令牌的双层身份验证：
 
-### Running the Development Server
+1. **页面级别认证**：用户必须输入有效的访问令牌才能访问应用的任何页面。这通过中间件强制执行，用于检查有效的令牌cookie。
 
-Run the development server:
+2. **API认证**：相同的令牌用于验证API请求，用于修改数据（添加、更新、删除链接）。
+
+**主要特性：**
+- 令牌输入登录页面
+- 访问令牌与 `.env` 中的值进行验证
+- 安全的cookie存储令牌（httpOnly，生产环境下启用secure）
+- 登出功能
+- 所有页面和受保护API路由的令牌验证
+
+### 运行开发服务器
+
+运行开发服务器：
 
 ```bash
 npm run dev
-# or
+# 或
 yarn dev
-# or
+# 或
 pnpm dev
-# or
+# 或
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+在浏览器中打开 [http://localhost:3000](http://localhost:3000) 查看结果。
 
-### Authentication
+### 权限验证说明
 
-This application uses a simple token-based authentication system:
+应用采用简单的基于令牌的验证系统：
 
-- Reading links is publicly accessible (no authentication required)
-- Adding, updating, and deleting links requires authentication
-- The access token is defined in the `.env` file on the server and `.env.local` for the client
-- You can also set the access token manually using the UI at the bottom of the page
+- 读取链接功能公开访问（无需认证）
+- 添加、更新和删除链接需要认证
+- 访问令牌在服务器端通过 `.env` 文件定义
+- 也可以通过页面底部的UI手动设置访问令牌
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 技术栈详情
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **前端框架**：[Next.js](https://nextjs.org)
+- **字体优化**：使用 [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) 自动优化加载 [Geist](https://vercel.com/font) 字体
 
-## Learn More
+## 了解更多
 
-To learn more about Next.js, take a look at the following resources:
+要了解更多关于Next.js的信息，请查看以下资源：
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js 文档](https://nextjs.org/docs) - 了解Next.js的特性和API
+- [学习 Next.js](https://nextjs.org/learn) - 交互式Next.js教程
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 部署
 
-## Deploy on Vercel
+推荐使用 [Vercel平台](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) 部署你的Next.js应用，Vercel是Next.js的创建者。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+查看 [Next.js部署文档](https://nextjs.org/docs/app/building-your-application/deploying) 了解更多详情。
