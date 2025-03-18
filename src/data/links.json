@@ -29,6 +29,24 @@
         "blog",
         "tech"
       ]
+    },
+    {
+      "title": "NAS1",
+      "url": "http://192.168.0.1",
+      "description": "NAS",
+      "categories": [
+        "nas"
+      ],
+      "id": "4"
+    },
+    {
+      "title": "NAS2",
+      "url": "http://192.168.0.2",
+      "description": "nas",
+      "categories": [
+        "nas"
+      ],
+      "id": "5"
     }
   ]
 }

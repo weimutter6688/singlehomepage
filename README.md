@@ -113,3 +113,27 @@ pm2 stop singlehomepage    # 停止应用
 pm2 logs singlehomepage    # 查看应用日志
 pm2 list                   # 查看所有应用状态
 ```
+
+### Nginx配置
+
+使用Nginx作为反向代理：
+
+1. 将nginx.conf文件复制到Nginx配置目录：
+```bash
+sudo cp nginx.conf /etc/nginx/sites-available/singlehomepage
+```
+
+2. 创建符号链接到sites-enabled：
+```bash
+sudo ln -s /etc/nginx/sites-available/singlehomepage /etc/nginx/sites-enabled/
+```
+
+3. 修改配置文件中的`example.com`为你的域名
+
+4. 测试并重启Nginx：
+```bash
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+注意：默认配置监听3000端口，如果更改了应用端口，需要相应更新Nginx配置中的`proxy_pass`地址

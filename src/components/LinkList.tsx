@@ -1,25 +1,57 @@
-"use client";
+'use client';
 
+import type { ChangeEvent } from 'react';
 import { useState, useEffect } from 'react';
-import { Link } from '@/lib/data'; // Import only the type
+import { Link } from '@/lib/data';
 import LinkCard from './LinkCard';
-import LinkForm from './LinkForm';
-
-type SortOption = 'alphabetical' | 'recent' | 'category';
+import { LinkForm } from './link-form';
+import { SortOption } from '@/types';
 
 // Default headers for API calls
 const defaultHeaders = {
   'Content-Type': 'application/json'
 };
 
-export default function LinkList() {
+// Type-safe state update function
+const createUpdater = <T,>(setter: React.Dispatch<React.SetStateAction<T>>) => {
+  return (updater: (prev: T) => T): void => {
+    setter((prev: T) => updater(prev));
+  };
+};
+
+export type SelectHandler = (e: ChangeEvent<HTMLSelectElement>) => void;
+
+export default function LinkList(): JSX.Element {
+  // 状态定义
   const [links, setLinks] = useState<Link[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortOption, setSortOption] = useState<SortOption>('alphabetical');
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState<boolean>(false);
   const [editingLink, setEditingLink] = useState<Link | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // 创建类型安全的更新函数
+  const updateLinks = createUpdater<Link[]>(setLinks);
+  const updateCategories = createUpdater<string[]>(setCategories);
+
+  // 类型安全的数组映射函数
+  const mapLinks = (fn: (link: Link) => Link) => {
+    updateLinks((prevLinks: Link[]) => prevLinks.map(fn));
+  };
+
+  const filterLinks = (fn: (link: Link) => boolean) => {
+    updateLinks((prevLinks: Link[]) => prevLinks.filter(fn));
+  };
+
+  // 事件处理器
+  const handleCategoryChange: SelectHandler = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleSortChange: SelectHandler = (e) => {
+    setSortOption(e.target.value as SortOption);
+  };
 
   // Load links and categories
   useEffect(() => {
@@ -65,7 +97,7 @@ export default function LinkList() {
     
     // Auto hide after 3 seconds
     setTimeout(() => {
-      setToast(prev => ({ ...prev, visible: false }));
+      setToast((prev: typeof toast) => ({ ...prev, visible: false }));
     }, 3000);
   };
 
@@ -89,7 +121,7 @@ export default function LinkList() {
       }
       
       const newLink = await response.json();
-      setLinks(prevLinks => [...prevLinks, newLink]);
+      updateLinks((prevLinks: Link[]) => [...prevLinks, newLink]);
       
       // Update categories if new categories were added
       const newCategories = linkData.categories?.filter(cat => !categories.includes(cat)) || [];
@@ -127,12 +159,13 @@ export default function LinkList() {
       }
       
       const updatedLink = await response.json();
-      setLinks(prevLinks => prevLinks.map(link => link.id === updatedLink.id ? updatedLink : link));
+      // Update links with type safety
+      mapLinks((link: Link) => link.id === updatedLink.id ? updatedLink : link);
       
       // Update categories if new categories were added
       const newCategories = linkData.categories?.filter(cat => !categories.includes(cat)) || [];
       if (newCategories.length > 0) {
-        setCategories(prevCategories => [...prevCategories, ...newCategories]);
+        updateCategories((prevCategories: string[]) => [...prevCategories, ...newCategories]);
       }
       
       setEditingLink(null);
@@ -168,10 +201,11 @@ export default function LinkList() {
         const result = await response.json();
         if (result.success) {
           // Optimistically update UI
-          setLinks(prevLinks => prevLinks.filter(link => link.id !== id));
+          // Update links with type safety
+          filterLinks((link: Link) => link.id !== id);
           
           // Update categories if the last link with these categories was deleted
-          const remainingLinks = links.filter(link => link.id !== id);
+          const remainingLinks = links.filter((link: Link) => link.id !== id);
           const remainingCategories = Array.from(
             new Set(remainingLinks.flatMap(link => link.categories || []))
           );
@@ -190,10 +224,10 @@ export default function LinkList() {
   // Filter links by selected category
   const filteredLinks = selectedCategory === 'all'
     ? links
-    : links.filter(link => link.categories?.includes(selectedCategory));
+    : links.filter((link: Link) => link.categories?.includes(selectedCategory));
 
   // Sort links based on selected sort option
-  const sortedLinks = [...filteredLinks].sort((a, b) => {
+  const sortedLinks = [...filteredLinks].sort((a: Link, b: Link) => {
     switch (sortOption) {
       case 'alphabetical':
         return a.title.localeCompare(b.title);
@@ -278,11 +312,11 @@ export default function LinkList() {
           <div className="flex flex-wrap gap-3">
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={handleCategoryChange}
               className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
             >
               <option value="all">所有分类</option>
-              {categories.map(category => (
+              {categories.map((category: string) => (
                 <option key={category} value={category}>
                   {category}
                 </option>
@@ -291,7 +325,7 @@ export default function LinkList() {
             
             <select
               value={sortOption}
-              onChange={(e) => setSortOption(e.target.value as SortOption)}
+              onChange={handleSortChange}
               className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
             >
               <option value="alphabetical">按字母排序</option>
