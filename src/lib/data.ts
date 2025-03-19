@@ -13,6 +13,8 @@ export interface Link {
   url: string;
   description?: string;
   categories: string[];
+  starred?: boolean;
+  starredAt?: number; // 用于记录加星标的时间，用于排序
 }
 
 // Data structure

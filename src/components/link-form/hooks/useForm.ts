@@ -60,13 +60,8 @@ export function useForm({ initialLink, onSubmit }: Pick<LinkFormProps, 'initialL
 
         if (!url.trim()) {
             newErrors.url = '请输入URL';
-        } else {
-            const urlWithProtocol = url.trim();
-            if (!urlWithProtocol.startsWith('http://') && !urlWithProtocol.startsWith('https://')) {
-                newErrors.url = '请输入以 http:// 或 https:// 开头的有效URL';
-            } else if (!URL_REGEX.test(urlWithProtocol)) {
-                newErrors.url = '请输入有效的URL';
-            }
+        } else if (!URL_REGEX.test(url.trim())) {
+            newErrors.url = '请输入以 http:// 或 https:// 开头的URL';
         }
 
         if (selectedCategories.length === 0 && !newCategory.trim()) {
@@ -112,15 +107,11 @@ export function useForm({ initialLink, onSubmit }: Pick<LinkFormProps, 'initialL
     };
 
     const handleUrlBlur = () => {
-        const urlWithProtocol = url.trim();
-        if (urlWithProtocol) {
-            if (!urlWithProtocol.startsWith('http://') && !urlWithProtocol.startsWith('https://')) {
-                updateErrors({ url: '请输入以 http:// 或 https:// 开头的有效URL' });
-            } else if (!URL_REGEX.test(urlWithProtocol)) {
-                updateErrors({ url: '请输入有效的URL' });
-            } else {
-                updateErrors({ url: undefined });
-            }
+        const trimmedUrl = url.trim();
+        if (trimmedUrl && !URL_REGEX.test(trimmedUrl)) {
+            updateErrors({ url: '请输入以 http:// 或 https:// 开头的URL' });
+        } else {
+            updateErrors({ url: undefined });
         }
     };
 

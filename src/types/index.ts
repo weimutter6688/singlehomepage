@@ -2,7 +2,7 @@ import { ChangeEvent } from 'react';
 import { Link } from '@/lib/data';
 
 export type ToastType = 'success' | 'error' | 'info';
-export type SortOption = 'alphabetical' | 'recent' | 'category';
+export type SortOption = 'alphabetical' | 'recent' | 'category' | 'starred';
 
 export interface ToastState {
     visible: boolean;

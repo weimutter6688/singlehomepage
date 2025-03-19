@@ -179,6 +179,38 @@ export default function LinkList(): JSX.Element {
     }
   };
 
+  // Handle toggling star status
+  const handleToggleStar = async (id: string) => {
+    try {
+      const response = await fetch('/api/links/star', {
+        method: 'POST',
+        headers: defaultHeaders,
+        body: JSON.stringify({ id }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          showToast('未授权操作：更新星标需要有效的访问令牌', 'error');
+          return;
+        }
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to toggle star');
+      }
+
+      const updatedLink = await response.json();
+      // Update links with type safety
+      mapLinks((link: Link) =>
+        link.id === id
+          ? { ...link, starred: updatedLink.starred, starredAt: updatedLink.starredAt }
+          : link
+      );
+      showToast(updatedLink.starred ? '已添加星标' : '已取消星标', 'success');
+    } catch (error) {
+      console.error('Error toggling star:', error);
+      showToast(`操作失败: ${error instanceof Error ? error.message : '未知错误'}`, 'error');
+    }
+  };
+
   // Handle deleting a link
   const handleDeleteLink = async (id: string) => {
     if (confirm('确定要删除这个链接吗？')) {
@@ -228,7 +260,18 @@ export default function LinkList(): JSX.Element {
 
   // Sort links based on selected sort option
   const sortedLinks = [...filteredLinks].sort((a: Link, b: Link) => {
+    // 首先按星标状态排序
+    if (a.starred && !b.starred) return -1;
+    if (!a.starred && b.starred) return 1;
+    if (a.starred && b.starred) {
+      // 如果都有星标，按星标时间排序
+      return (b.starredAt || 0) - (a.starredAt || 0);
+    }
+
+    // 然后按选择的排序选项排序
     switch (sortOption) {
+      case 'starred':
+        return 0; // 已经按星标排序过了
       case 'alphabetical':
         return a.title.localeCompare(b.title);
       case 'category':
@@ -328,6 +371,7 @@ export default function LinkList(): JSX.Element {
               onChange={handleSortChange}
               className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
             >
+              <option value="starred">按星标排序</option>
               <option value="alphabetical">按字母排序</option>
               <option value="recent">最近添加</option>
               <option value="category">按分类排序</option>
@@ -371,6 +415,7 @@ export default function LinkList(): JSX.Element {
               link={link}
               onEdit={handleEditLink}
               onDelete={handleDeleteLink}
+              onToggleStar={handleToggleStar}
             />
           ))}
         </div>

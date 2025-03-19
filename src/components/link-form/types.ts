@@ -41,5 +41,5 @@ export interface UseFormReturn {
     updateErrors: (updates: Partial<ErrorState>) => void;
 }
 
-// URL validation regex - supports domains, IP addresses, and localhost
-export const URL_REGEX = /^(?:http(s)?:\/\/)(?:localhost|(?:[\da-z.-]+)\.(?:[a-z.]{2,6})|(?:\d{1,3}\.){3}\d{1,3})(?::\d{1,5})?(?:[/\w.-]*)*\/?$/;
+// URL validation regex - only checks for http:// or https:// prefix
+export const URL_REGEX = /^https?:\/\//i;
