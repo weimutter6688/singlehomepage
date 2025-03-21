@@ -5,11 +5,13 @@ interface FormFieldsProps {
   title: string;
   url: string;
   description: string;
+  isPrivate: boolean;
   errors: ErrorState;
   isSubmitting: boolean;
   onTitleChange: (value: string) => void;
   onUrlChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
+  onPrivateChange: (value: boolean) => void;
   onUrlBlur: () => void;
 }
 
@@ -17,11 +19,13 @@ export const FormFields: React.FC<FormFieldsProps> = ({
   title,
   url,
   description,
+  isPrivate,
   errors,
   isSubmitting,
   onTitleChange,
   onUrlChange,
   onDescriptionChange,
+  onPrivateChange,
   onUrlBlur,
 }) => {
   return (
@@ -83,6 +87,26 @@ export const FormFields: React.FC<FormFieldsProps> = ({
           disabled={isSubmitting}
           placeholder="可选的简短描述"
         />
+      </div>
+
+      {/* Private field */}
+      <div className="mb-4">
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="private"
+            checked={isPrivate}
+            onChange={(e) => onPrivateChange(e.target.checked)}
+            className="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded"
+            disabled={isSubmitting}
+          />
+          <label htmlFor="private" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+            设为私密链接（仅认证用户可见）
+          </label>
+        </div>
+        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 ml-6">
+          私密链接只有在使用访问令牌验证后才能查看
+        </p>
       </div>
     </>
   );

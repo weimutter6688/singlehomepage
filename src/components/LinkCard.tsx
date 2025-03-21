@@ -70,6 +70,12 @@ export default function LinkCard({ link, onEdit, onDelete, onToggleStar }: LinkC
             {category}
           </span>
         ))}
+        
+        {link.private && (
+          <span className="inline-block px-2 py-0.5 text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200 rounded-full">
+            私密
+          </span>
+        )}
       </div>
       
       {link.description && (

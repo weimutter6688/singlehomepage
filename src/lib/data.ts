@@ -15,6 +15,7 @@ export interface Link {
   categories: string[];
   starred?: boolean;
   starredAt?: number; // 用于记录加星标的时间，用于排序
+  private?: boolean; // 是否为私密链接，只有认证用户可见
 }
 
 // Data structure

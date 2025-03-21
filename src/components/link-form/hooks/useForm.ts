@@ -5,6 +5,7 @@ export function useForm({ initialLink, onSubmit }: Pick<LinkFormProps, 'initialL
     const [title, setTitle] = useState('');
     const [url, setUrl] = useState('');
     const [description, setDescription] = useState('');
+    const [isPrivate, setIsPrivate] = useState(false);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [newCategory, setNewCategory] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,6 +22,7 @@ export function useForm({ initialLink, onSubmit }: Pick<LinkFormProps, 'initialL
             setTitle(initialLink.title);
             setUrl(initialLink.url);
             setDescription(initialLink.description || '');
+            setIsPrivate(initialLink.private || false);
             setSelectedCategories(initialLink.categories || []);
         }
     }, [initialLink]);
@@ -93,7 +95,8 @@ export function useForm({ initialLink, onSubmit }: Pick<LinkFormProps, 'initialL
                 title: title.trim(),
                 url: url.trim(),
                 description: description.trim() || undefined,
-                categories: categories.length > 0 ? categories : []
+                categories: categories.length > 0 ? categories : [],
+                private: isPrivate
             };
 
             await onSubmit(linkData);
@@ -143,6 +146,7 @@ export function useForm({ initialLink, onSubmit }: Pick<LinkFormProps, 'initialL
         title,
         url,
         description,
+        isPrivate,
         selectedCategories,
         newCategory,
         isSubmitting,
@@ -155,6 +159,7 @@ export function useForm({ initialLink, onSubmit }: Pick<LinkFormProps, 'initialL
         setTitle,
         setUrl,
         setDescription,
+        setIsPrivate,
         setNewCategory,
         updateErrors,
     };

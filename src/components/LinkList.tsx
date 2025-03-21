@@ -6,6 +6,7 @@ import { Link } from '@/lib/data';
 import LinkCard from './LinkCard';
 import { LinkForm } from './link-form';
 import { SortOption } from '@/types';
+import { checkAuthentication } from '@/lib/client-auth';
 
 // Default headers for API calls
 const defaultHeaders = {
@@ -30,6 +31,7 @@ export default function LinkList(): JSX.Element {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [editingLink, setEditingLink] = useState<Link | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   // 创建类型安全的更新函数
   const updateLinks = createUpdater<Link[]>(setLinks);
@@ -53,7 +55,17 @@ export default function LinkList(): JSX.Element {
     setSortOption(e.target.value as SortOption);
   };
 
-  // Load links and categories
+  // Check authentication status
+  useEffect(() => {
+    async function checkAuth() {
+      const authStatus = await checkAuthentication();
+      setIsAuthenticated(authStatus);
+    }
+    
+    checkAuth();
+  }, []);
+
+  // Load links and categories - reload when authentication state changes
   useEffect(() => {
     async function loadData() {
       setIsLoading(true);
@@ -74,7 +86,7 @@ export default function LinkList(): JSX.Element {
     }
     
     loadData();
-  }, []);
+  }, [isAuthenticated]); // 依赖于认证状态，当认证状态变化时重新加载
 
   // Toast state
   const [toast, setToast] = useState<{
@@ -253,10 +265,13 @@ export default function LinkList(): JSX.Element {
     }
   };
 
-  // Filter links by selected category
-  const filteredLinks = selectedCategory === 'all'
-    ? links
-    : links.filter((link: Link) => link.categories?.includes(selectedCategory));
+  // Filter links by selected category only
+  // 注意：私密链接的过滤已经在 API 层完成，不需要在前端再次过滤
+  const filteredLinks = links
+    .filter((link: Link) => {
+      // 仅按分类过滤
+      return selectedCategory === 'all' || link.categories?.includes(selectedCategory);
+    });
 
   // Sort links based on selected sort option
   const sortedLinks = [...filteredLinks].sort((a: Link, b: Link) => {

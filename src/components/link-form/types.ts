@@ -25,6 +25,7 @@ export interface UseFormReturn {
     title: string;
     url: string;
     description: string;
+    isPrivate: boolean;
     selectedCategories: string[];
     newCategory: string;
     isSubmitting: boolean;
@@ -37,6 +38,7 @@ export interface UseFormReturn {
     setTitle: (value: string) => void;
     setUrl: (value: string) => void;
     setDescription: (value: string) => void;
+    setIsPrivate: (value: boolean) => void;
     setNewCategory: (value: string) => void;
     updateErrors: (updates: Partial<ErrorState>) => void;
 }

@@ -15,6 +15,7 @@ export const LinkForm: React.FC<LinkFormProps> = ({
     title,
     url,
     description,
+    isPrivate,
     selectedCategories,
     newCategory,
     isSubmitting,
@@ -27,6 +28,7 @@ export const LinkForm: React.FC<LinkFormProps> = ({
     setTitle,
     setUrl,
     setDescription,
+    setIsPrivate,
     setNewCategory
   } = useForm({ initialLink, onSubmit });
 
@@ -43,11 +45,13 @@ export const LinkForm: React.FC<LinkFormProps> = ({
           title={title}
           url={url}
           description={description}
+          isPrivate={isPrivate}
           errors={errors}
           isSubmitting={isSubmitting}
           onTitleChange={setTitle}
           onUrlChange={setUrl}
           onDescriptionChange={setDescription}
+          onPrivateChange={setIsPrivate}
           onUrlBlur={handleUrlBlur}
         />
         
