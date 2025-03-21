@@ -14,11 +14,14 @@ export async function toggleLinkStar(id: string): Promise<Link | null> {
     const now = Date.now();
 
     // 更新星标状态
-    links[index] = {
+    const updatedLink = {
         ...link,
         starred: !link.starred,
         starredAt: !link.starred ? now : undefined
     };
+
+    // 保存对更新后链接的引用
+    links[index] = updatedLink;
 
     // 重新排序：星标的在前面，按星标时间倒序排列
     const sortedLinks = links.sort((a, b) => {
@@ -31,7 +34,7 @@ export async function toggleLinkStar(id: string): Promise<Link | null> {
     });
 
     await saveLinks(sortedLinks);
-    return links[index];
+    return updatedLink; // 返回更新后的链接对象，而不是通过索引访问
 }
 
 // 获取排序后的链接列表
