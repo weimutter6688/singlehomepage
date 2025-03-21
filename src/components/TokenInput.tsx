@@ -8,18 +8,23 @@ export default function TokenInput() {
   const [showInput, setShowInput] = useState(false);
   const [message, setMessage] = useState('');
 
-  const handleSaveToken = () => {
+  const handleSaveToken = async () => {
     if (!token.trim()) {
       setMessage('令牌不能为空');
       return;
     }
     
-    setAccessToken(token);
-    setMessage('访问令牌已保存');
-    setTimeout(() => {
-      setMessage('');
-      setShowInput(false);
-    }, 1500);
+    const success = await setAccessToken(token);
+    
+    if (success) {
+      setMessage('访问令牌已保存，正在刷新页面...');
+      setTimeout(() => {
+        // 刷新页面以重新加载所有数据和状态
+        window.location.reload();
+      }, 1000);
+    } else {
+      setMessage('保存令牌失败，请重试');
+    }
   };
 
   return (
