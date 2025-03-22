@@ -69,18 +69,18 @@ export default function PublicPage() {
   }
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <header className="container-custom mb-10 flex justify-between items-center">
+    <div className="min-h-screen py-4 sm:py-10 px-2 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <header className="container-custom mb-4 sm:mb-10 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">homepage</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">导航页</h1>
         </div>
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-2">
           <ThemeToggle />
           
           <button
             onClick={() => router.push('/login')}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            className="h-8 px-3 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors flex items-center justify-center"
           >
             管理员登录
           </button>
@@ -90,93 +90,96 @@ export default function PublicPage() {
       <main className="container-custom max-w-6xl">
         <div className="space-y-6 relative">
           {/* Toolbar */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div className="flex flex-wrap gap-3">
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
-                >
-                  <option value="all">所有分类</option>
-                  {categories.map(category => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-                
-                <select
-                  value={sortOption}
-                  onChange={(e) => setSortOption(e.target.value as 'alphabetical' | 'recent' | 'category')}
-                  className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
-                >
-                  <option value="alphabetical">按字母排序</option>
-                  <option value="recent">最近添加</option>
-                  <option value="category">按分类排序</option>
-                </select>
-              </div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-2 sm:p-4 mb-3 sm:mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="h-8 text-xs px-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+              >
+                <option value="all">所有分类</option>
+                {categories.map(category => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+              
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value as 'alphabetical' | 'recent' | 'category')}
+                className="h-8 text-xs px-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+              >
+                <option value="alphabetical">按字母排序</option>
+                <option value="recent">最近添加</option>
+                <option value="category">按分类排序</option>
+              </select>
             </div>
           </div>
           
           {/* Link count */}
-          <div className="text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm">
+          <div className="text-xs text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm">
             显示 {sortedLinks.length} 个链接
             {selectedCategory !== 'all' && ` (分类: ${selectedCategory})`}
           </div>
           
           {/* Link grid */}
           {sortedLinks.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-1.5 sm:gap-2">
               {sortedLinks.map(link => (
                 <div
                   key={link.id}
-                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-lg transition-all p-3"
+                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-all p-1.5 sm:p-3"
                 >
-                  <div className="flex items-start justify-between">
-                    <h3 className="text-md font-semibold mb-1 text-gray-900 dark:text-white">
+                  <div className="flex items-start justify-between mb-1">
+                    <h3 className="text-sm sm:text-md font-semibold text-gray-900 dark:text-white truncate max-w-[90%]">
                       {link.title}
                     </h3>
                   </div>
                   
-                  <div className="flex flex-wrap gap-1 mb-2">
+                  {/* 分类标签 */}
+                  <div className="flex flex-wrap gap-0.5 mb-1">
                     {link.categories && link.categories.map((category, index) => (
                       <span
                         key={index}
-                        className="inline-block px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 rounded-full"
+                        className="inline-block px-1 py-0.5 text-[10px] font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 rounded-full truncate max-w-[70px] sm:max-w-[100px]"
                       >
                         {category}
                       </span>
                     ))}
                   </div>
                   
+                  {/* 链接说明 - 如果有的话 */}
                   {link.description && (
-                    <p className="text-xs text-gray-600 dark:text-gray-300 mb-1">{link.description}</p>
+                    <p className="text-[10px] text-gray-600 dark:text-gray-300 mb-1 line-clamp-2 leading-tight">{link.description}</p>
                   )}
                   
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 break-all">
-                    {link.url}
-                  </p>
-                  
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-xs font-medium text-primary hover:text-primary-hover transition-colors px-2 py-1 bg-blue-50 dark:bg-blue-900/20 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30"
-                  >
-                    访问链接
-                    <svg className="ml-1.5 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
-                      <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path>
-                    </svg>
-                  </a>
+                  {/* URL 与访问按钮 */}
+                  <div className="flex items-center justify-between mt-1">
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate max-w-[60%]">
+                      {link.url.replace(/^https?:\/\//, '')}
+                    </p>
+                    
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-[10px] font-medium text-primary hover:text-primary-hover transition-colors px-1 py-0.5 bg-blue-50 dark:bg-blue-900/20 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                    >
+                      <span className="whitespace-nowrap">Open</span>
+                      <svg className="ml-0.5 w-3 h-3 sm:w-3.5 sm:h-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
+                        <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path>
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="bg-gray-50 dark:bg-gray-800/50 p-8 text-center rounded-lg border border-gray-200 dark:border-gray-700 backdrop-blur-sm">
-              <p className="text-gray-600 dark:text-gray-400">
-                {selectedCategory === 'all' 
+              <p className="text-gray-600 dark:text-gray-400 text-xs">
+                {selectedCategory === 'all'
                   ? '没有找到任何链接。'
                   : `没有找到分类为"${selectedCategory}"的链接。`
                 }
@@ -186,8 +189,8 @@ export default function PublicPage() {
         </div>
       </main>
       
-      <footer className="container-custom mt-16 pt-6 border-t border-gray-200 dark:border-gray-700">
-        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+      <footer className="container-custom mt-8 sm:mt-16 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+        <p className="text-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
           &copy; {new Date().getFullYear()} 我的个人导航页
         </p>
       </footer>

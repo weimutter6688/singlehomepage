@@ -73,18 +73,18 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <header className="container-custom mb-10 flex justify-between items-center">
+    <div className="min-h-screen py-4 sm:py-10 px-2 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <header className="container-custom mb-4 sm:mb-10 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">我的导航页 (管理员视图)</h1>
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">管理员视图</h1>
         </div>
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-1 sm:gap-2">
           <ThemeToggle />
           
           <button
             onClick={() => router.push('/public')}
-            className="px-4 py-2 bg-blue-200 dark:bg-blue-700 text-blue-800 dark:text-blue-200 rounded-md hover:bg-blue-300 dark:hover:bg-blue-600 transition-colors mr-2"
+            className="h-7 sm:h-8 px-2 sm:px-3 text-xs bg-blue-200 dark:bg-blue-700 text-blue-800 dark:text-blue-200 rounded hover:bg-blue-300 dark:hover:bg-blue-600 transition-colors flex items-center justify-center whitespace-nowrap"
           >
             公开视图
           </button>
@@ -92,20 +92,20 @@ export default function Home() {
           <button
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            className="h-7 sm:h-8 px-2 sm:px-3 text-xs bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center justify-center whitespace-nowrap"
           >
             {isLoggingOut ? '登出中...' : '登出'}
           </button>
         </div>
       </header>
       
-      <main className="container-custom max-w-6xl">
+      <main className="container-custom max-w-6xl space-y-6">
         <LinkList />
         <DataManagement />
       </main>
       
-      <footer className="container-custom mt-16 pt-6 border-t border-gray-200 dark:border-gray-700">
-        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+      <footer className="container-custom mt-8 sm:mt-16 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+        <p className="text-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
           &copy; {new Date().getFullYear()} 我的个人导航页
         </p>
       </footer>

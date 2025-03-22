@@ -365,43 +365,47 @@ export default function LinkList(): JSX.Element {
       )}
 
       {/* Toolbar */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="flex flex-wrap gap-3">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-2 sm:p-4 mb-3 sm:mb-6">
+        <div className="flex flex-col gap-2">
+          {/* 顶部行 - 分类选择器 + 添加按钮 */}
+          <div className="flex items-center gap-2">
             <select
               value={selectedCategory}
               onChange={handleCategoryChange}
-              className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+              className="flex-grow text-xs px-2 py-1.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
             >
-              <option value="all">所有分类</option>
+              <option value="all">全部分类</option>
               {categories.map((category: string) => (
                 <option key={category} value={category}>
                   {category}
                 </option>
               ))}
             </select>
-            
+
+            <button
+              onClick={() => setShowForm(true)}
+              className="shrink-0 flex items-center justify-center w-8 h-8 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600 transition-colors"
+              aria-label="添加链接"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </button>
+          </div>
+          
+          {/* 第二行 - 排序选择器 */}
+          <div className="flex w-full">
             <select
               value={sortOption}
               onChange={handleSortChange}
-              className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+              className="w-full text-xs px-2 py-1.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
             >
-              <option value="starred">按星标排序</option>
-              <option value="alphabetical">按字母排序</option>
+              <option value="starred">按星标</option>
+              <option value="alphabetical">按字母</option>
               <option value="recent">最近添加</option>
-              <option value="category">按分类排序</option>
+              <option value="category">按分类</option>
             </select>
           </div>
-          
-          <button
-            onClick={() => setShowForm(true)}
-            className="flex items-center justify-center px-5 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition-colors transform hover:scale-105"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            添加新链接
-          </button>
         </div>
       </div>
       
@@ -416,14 +420,14 @@ export default function LinkList(): JSX.Element {
       )}
       
       {/* Link count */}
-      <div className="text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm">
+      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 p-2 sm:p-3 rounded-lg shadow-sm">
         显示 {sortedLinks.length} 个链接
         {selectedCategory !== 'all' && ` (分类: ${selectedCategory})`}
       </div>
       
       {/* Link grid */}
       {sortedLinks.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1.5 sm:gap-2">
           {sortedLinks.map(link => (
             <LinkCard
               key={link.id}
