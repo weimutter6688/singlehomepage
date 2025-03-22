@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import LinkList from '@/components/LinkList';
+import { LinkList } from '@/components/link-list';
 import ThemeToggle from '@/components/ThemeToggle';
 import DataManagement from '@/components/DataManagement';
 
